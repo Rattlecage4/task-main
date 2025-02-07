@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/images"/>
+    <qresource prefix="/">
+        <file>resources/image/add.png</file>
+        <file>resources/image/back.png</file>
+        <file>resources/image/reverse.png</file>
+        <file>resources/image/settings.png</file>
+        <file>resources/image/stimulation_panel.png</file>
+        <file>resources/image/Yzor.png</file>
+    </qresource>
+</RCC>
