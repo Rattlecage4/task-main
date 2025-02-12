@@ -53,9 +53,6 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
     m_sinSer->setPen(mypen);
 
 
-
-
-
     connect(m_updateTimer, &QTimer::timeout, this, &ChartView::updateGraph);
 
     //    m_timerId = startTimer(1000);
@@ -69,16 +66,6 @@ ChartView::~ChartView()
 {
 
 }
-
-void ChartView::keyPressEvent(QKeyEvent *m_press)
-{
-    if (m_press->key() == Qt::Key_Left)
-    {
-        qDebug()<<"Hoj";
-    }
-}
-
-
 
 void ChartView::disableBackground()
 {
@@ -97,7 +84,6 @@ void ChartView::updateGraph()
 {
     setUpdatesEnabled(false);
 
-
     static int timerRange = 0;
 
     for(int i = 0; i < 100; ++i){
@@ -109,18 +95,26 @@ void ChartView::updateGraph()
 
     chart()->axisX()->setRange(timerRange, timerRange + 10);
     chart()->axisX()->setTitleVisible(false);
-    chart()->axisX()->gridVisibleChanged(false); //стобцы
-    chart()->axisX()->labelsVisibleChanged(false); //числа
+   // chart()->axisX()->gridVisibleChanged(false); //стобцы
+   // chart()->axisX()->labelsVisibleChanged(false); //числа
     chart()->axisX()->setVisible(false);
 
-
-    m_lastX += 100;
-
+   // m_lastX += 100;
     timerRange += 10;
 
     setUpdatesEnabled(true);
-
     update();
+}
+
+void ChartView::keyPressEvent(QKeyEvent *m_press)
+{
+    if (m_press->key() == Qt::Key_Left)
+    {
+        *m_sinSer<<QPointF(m_lastX, m_offset);
+
+    }
+
+
 }
 
 
@@ -234,16 +228,10 @@ void Widget::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 
     QPainter p(this);
-    QPainter Py(this);
-    QPainter L1(this);
-    QPainter L2(this);
 
     p.save();
-    L1.save();
-    L2.save();
-    Py.save();
 
-    L1.setPen(QPen(Qt::yellow)); //?
+    p.setPen(QPen(Qt::black));
 
 
 
@@ -256,19 +244,15 @@ void Widget::paintEvent(QPaintEvent *e)
 
 
     p.drawPixmap(rect(), QPixmap(":resources/image/back"));
-    Py.drawPixmap(QRect(rectY), QPixmap(":resources/image/Yzor"));
+    p.drawPixmap(QRect(rectY), QPixmap(":resources/image/Yzor"));
 
-    QPen mypen = L1.pen();  //?
-    mypen.setWidth(10);
-    L1.setPen(mypen);
+    QPen mypen = p.pen();
+    mypen.setWidth(4);
+    p.setPen(mypen);
 
-    L1.drawLine(200,220,200,1000);
-    L2.drawLine(400,220,400,1000);
+    p.drawLine(200,220,200,1000);
+    p.drawLine(400,220,400,1000);
 
     p.restore();
-    Py.restore();
-    L1.restore();
-    L2.restore();
-
 
 }
