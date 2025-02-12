@@ -33,7 +33,8 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
 
     m_sinSer->setColor(clr);
 
-    auto timeAxis = new QDateTimeAxis(this);
+    auto timeAxis = new QDateTimeAxis(this); //new
+    
 
 
     //    chart()->legend()->close();
