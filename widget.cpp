@@ -35,16 +35,6 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
 
     auto timeAxis = new QDateTimeAxis(this); //new
     
-
-
-    //    chart()->legend()->close();
-
-
-    //    for(int i=0;i<1000;++i){
-    //        *sinSer<<QPointF(i, qSin(i * koef) + offset);
-    //    }
-
-
     chart()->addSeries(m_sinSer);
 
     chart()->legend()->close();
@@ -55,6 +45,8 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
     chart()->createDefaultAxes();
 
     chart()->axisY()->setRange(offset - 1, offset + 1);
+    chart()->axisY()->gridVisibleChanged(false);
+    chart()->axisY()->setVisible(false);
 
     QPen mypen = m_sinSer->pen();
     mypen.setWidth(5);
@@ -77,6 +69,16 @@ ChartView::~ChartView()
 {
 
 }
+
+void ChartView::keyPressEvent(QKeyEvent *m_press)
+{
+    if (m_press->key() == Qt::Key_Left)
+    {
+        qDebug()<<"Hoj";
+    }
+}
+
+
 
 void ChartView::disableBackground()
 {
@@ -107,12 +109,14 @@ void ChartView::updateGraph()
 
     chart()->axisX()->setRange(timerRange, timerRange + 10);
     chart()->axisX()->setTitleVisible(false);
+    chart()->axisX()->gridVisibleChanged(false); //стобцы
+    chart()->axisX()->labelsVisibleChanged(false); //числа
+    chart()->axisX()->setVisible(false);
 
 
     m_lastX += 100;
 
-    timerRange += 1;
-    m_sinSer->remove(0);
+    timerRange += 10;
 
     setUpdatesEnabled(true);
 
@@ -135,6 +139,7 @@ Widget::Widget(QWidget *parent)
     auto Graph = new QLabel(this);
     Graph->setStyleSheet("font-size: 35px;color: darkBlue; font-family: Arial;");
     Graph->setText("Graph");
+
     stopWatch= new QLabel(this);
     stopWatch->setStyleSheet("font-size: 24px;");
     stopWatch->setText(QString::number(h)+":"+QString::number(m)+":"+QString::number(s));
@@ -153,13 +158,25 @@ Widget::Widget(QWidget *parent)
     buttonSettings->setFixedSize(80,80);
     buttonSettings->setFlat(true);
 
+    QFrame* line = new QFrame();
+    line->setFrameShape(QFrame::HLine); // Горизонтальная линия
+    line->setFrameShadow(QFrame::Raised);
+
+    QFrame *line2 = new QFrame();
+    line2->setFrameShape(QFrame::HLine);
+    line2->setFrameShadow(QFrame::Sunken);
+
+    QFrame *line3 = new QFrame();
+    line3->setFrameShape(QFrame::HLine);
+    line3->setFrameShadow(QFrame::Sunken);
+
     auto mainLay = new QVBoxLayout(this);
     auto buttonLay = new QGridLayout(this);
 
-    auto chartView = new ChartView(0.01, 0, Qt::blue, this);
-    auto chartView2 = new ChartView(0.1, 5,Qt::red, this);
+    auto chartView = new ChartView(0.3, 5, Qt::blue, this);
+    auto chartView2 = new ChartView(0.4, 5,Qt::red, this);
     auto chartView3 = new ChartView(0.5, 5, Qt::yellow, this);
-    auto chartView4 = new ChartView(0.5, 5,Qt::cyan, this);
+    auto chartView4 = new ChartView(0.7, 5,Qt::cyan, this);
 
 
     chartView->disableBackground();
@@ -179,8 +196,11 @@ Widget::Widget(QWidget *parent)
 
     mainLay->setContentsMargins(1,50,1,0);
     mainLay->addWidget(chartView);
+    mainLay->addWidget(line);
     mainLay->addWidget(chartView2);
+    mainLay->addWidget(line2);
     mainLay->addWidget(chartView3);
+    mainLay->addWidget(line3);
     mainLay->addWidget(chartView4);
 
 }
@@ -215,9 +235,17 @@ void Widget::paintEvent(QPaintEvent *e)
 
     QPainter p(this);
     QPainter Py(this);
+    QPainter L1(this);
+    QPainter L2(this);
 
     p.save();
+    L1.save();
+    L2.save();
     Py.save();
+
+    L1.setPen(QPen(Qt::yellow)); //?
+
+
 
     int x = 0; // Новая позиция по оси X
     int y = 0; // Новая позиция по оси Y
@@ -230,8 +258,17 @@ void Widget::paintEvent(QPaintEvent *e)
     p.drawPixmap(rect(), QPixmap(":resources/image/back"));
     Py.drawPixmap(QRect(rectY), QPixmap(":resources/image/Yzor"));
 
+    QPen mypen = L1.pen();  //?
+    mypen.setWidth(10);
+    L1.setPen(mypen);
+
+    L1.drawLine(200,220,200,1000);
+    L2.drawLine(400,220,400,1000);
+
     p.restore();
     Py.restore();
+    L1.restore();
+    L2.restore();
 
 
 }

@@ -4,6 +4,7 @@
 #include <QChartView>
 #include <QLineSeries>
 #include <QLabel>
+#include <QKeyEvent>
 
 class QTimer;
 
@@ -25,6 +26,7 @@ public:
 
 
 protected:
+    void keyPressEvent(QKeyEvent *m_press) override;
 
 
 private slots:
