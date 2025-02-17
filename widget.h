@@ -42,7 +42,11 @@ private:
     double m_offset;
 
     QTimer *m_updateTimer;
+    QTimer *m_updateGraphTimer;
     QLineSeries *m_sinSer;
+    QLineSeries *leftMarker;
+
+    float timerRange = 0;
 };
 
 
@@ -59,6 +63,8 @@ public:
 protected:
 
     virtual void paintEvent(QPaintEvent *e) override;
+    void buttonShowSetting();
+    void buttonHomeSetting();
 
 public slots:
     void timeUpdate();
@@ -70,6 +76,7 @@ private:
     int m=0;
     int ms=0;
     int h=0;
+
 };
 
 #endif // WIDGET_H
