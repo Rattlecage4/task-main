@@ -36,8 +36,8 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
 
     m_sinSer->setColor(clr);
 
-    auto xAxis = new QValueAxis(this); //new
-    auto yAxis = new QValueAxis(this); //new
+    auto xAxis = new QValueAxis(this);
+    auto yAxis = new QValueAxis(this);
 
     chart()->addSeries(m_sinSer);
 
@@ -54,6 +54,7 @@ ChartView::ChartView(double koef, double offset, const QColor &clr, QWidget *par
 
     yAxis->gridVisibleChanged(false);
     yAxis->setVisible(false);
+    chart()->axisX()->setVisible(false);
 
     QPen mypen = m_sinSer->pen();
     mypen.setWidth(5);
@@ -107,7 +108,7 @@ void ChartView::updateGraph()
     }
 
     chart()->axisX()->setTitleVisible(false);
-    chart()->axisX()->setVisible(false);
+
 
     m_lastX += 1;
 
@@ -170,6 +171,19 @@ Widget::Widget(QWidget *parent)
     Graph->setStyleSheet("font-size: 35px;color: darkBlue; font-family: Arial;");
     Graph->setText("Graph");
 
+    QLabel *ankleAngle = new QLabel();
+    ankleAngle->setText("Ankle angle");
+    ankleAngle->setStyleSheet("font-size: 24px;");
+    QLabel *kneeAngle = new QLabel();
+    kneeAngle->setText("Knee angle");
+    kneeAngle->setStyleSheet("font-size: 24px;");
+    QLabel *hipAngle = new QLabel();
+    hipAngle->setText("Hip angle");
+    hipAngle->setStyleSheet("font-size: 24px;");
+    QLabel *trunkAngle = new QLabel();
+    trunkAngle->setText("Trunk angle");
+    trunkAngle->setStyleSheet("font-size: 24px;");
+
     stopWatch= new QLabel(this);
     stopWatch->setStyleSheet("font-size: 24px;");
     stopWatch->setText(QString::number(h)+":"+QString::number(m)+":"+QString::number(s));
@@ -229,12 +243,16 @@ Widget::Widget(QWidget *parent)
     buttonLay->addWidget(buttonSettings,1,2);
 
     mainLay->setContentsMargins(1,50,1,0);
+    mainLay->addWidget(ankleAngle);
     mainLay->addWidget(chartView);
     mainLay->addWidget(line);
+    mainLay->addWidget(kneeAngle);
     mainLay->addWidget(chartView2);
     mainLay->addWidget(line2);
+    mainLay->addWidget(hipAngle);
     mainLay->addWidget(chartView3);
     mainLay->addWidget(line3);
+    mainLay->addWidget(trunkAngle);
     mainLay->addWidget(chartView4);
 
 }
