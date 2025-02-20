@@ -38,3 +38,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     task.qrc
+
+DISTFILES +=
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD
+        ANDROID_SDK = C:/Users/grabf/AppData/Local/Android/Sdk
+        ANDROID_NDK = C:/Users/grabf/AppData/Local/Android/android-ndk-r27c
+}
